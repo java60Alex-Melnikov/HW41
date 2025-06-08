@@ -1,0 +1,10 @@
+[
+    {"value": "name", "displayName": "Game Name"},
+    {"value": "-released", "displayName": "Release Date"},
+    {"value": "-added", "displayName": "Adding Date"},
+    {"value": "-created", "displayName": "Creation Date"},
+    {"value": "-updated", "displayName": "Modification Date"},
+    {"value": "-rating", "displayName": "Popularity"},
+    {"value": "-metacritic", "displayName": "Critic Score"}
+
+]
