@@ -1,15 +1,16 @@
 import { Menu, Button, Portal } from "@chakra-ui/react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { FC, useState } from "react";
+import { useState } from "react";
 import sortOptions from "../../config/sort-config.json";
 import MotionComponent from "./MotionComponent";
+import useGameStore from "../store/gameStore";
+
 export type SortOption = (typeof sortOptions)[0];
-interface Props {
-  selectedOrdering: SortOption | null;
-  onSelectOrdering: (platform: SortOption | null) => void;
-}
+
 const duration = 0.7;
-const SortSelector: FC<Props> = ({ onSelectOrdering, selectedOrdering }) => {
+const SortSelector = () => {
+  const selectedOrdering = useGameStore(state => state.gameQuery.ordering);
+  const setOrdering = useGameStore(state => state.setOrdering);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <>
@@ -40,7 +41,7 @@ const SortSelector: FC<Props> = ({ onSelectOrdering, selectedOrdering }) => {
                   <Menu.Item
                     key={option.value}
                     onClick={() => {
-                      onSelectOrdering(option);
+                      setOrdering(option);
                       setIsOpen(false);
                     }}
                     value={option.value}

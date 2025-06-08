@@ -1,18 +1,16 @@
 import { Menu, Button, Portal, Spinner } from '@chakra-ui/react'
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import usePlatform from '../hooks/usePlatform';
-import ParentPlatform from '../model/ParentPlatform';
 import MotionComponent from './MotionComponent';
+import useGameStore from '../store/gameStore';
 
-interface Props {
-    onSelectPlatform: (selectedPlatform: ParentPlatform | null) => void;
-    selectedPlatform: ParentPlatform | null
-}
 const duration=0.7;
-const PlatformSelector: FC<Props> = ({onSelectPlatform, selectedPlatform}) => {
-    const {error, data:platforms, isLoading} = usePlatform();
-   const [isOpen, setIsOpen] =  useState<boolean>(false)
+const PlatformSelector = () => {
+    const { error, data: platforms, isLoading } = usePlatform();
+    const selectedPlatform = useGameStore(state => state.gameQuery.platform);
+    const setPlatform = useGameStore(state => state.setPlatform);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <>
     
@@ -31,9 +29,9 @@ const PlatformSelector: FC<Props> = ({onSelectPlatform, selectedPlatform}) => {
           <MotionComponent duration={duration}>
             <Menu.Content>
             <Menu.Item key={"platform"} value={""}
-               onClick={() => {onSelectPlatform(null); setIsOpen(false)}}>All platforms</Menu.Item>
+               onClick={() => {setPlatform(null); setIsOpen(false)}}>All platforms</Menu.Item>
               {platforms.map(p => <Menu.Item key={p.id} value={p.id}
-               onClick={() => {onSelectPlatform(p); setIsOpen(false)}}>{p.name}</Menu.Item>)}
+               onClick={() => {setPlatform(p); setIsOpen(false)}}>{p.name}</Menu.Item>)}
             </Menu.Content>
           </MotionComponent>
         </Menu.Positioner>

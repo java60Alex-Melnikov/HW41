@@ -1,17 +1,16 @@
 import { Menu, Button, Portal, Spinner } from '@chakra-ui/react'
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import MotionComponent from './MotionComponent';
 import useGenre from '../hooks/useGenre';
+import useGameStore from '../store/gameStore';
 
-interface Props {
-    onSelectGenre: (selectedGenre: string|null) => void;
-    selectedGenre: string | null
-}
 const duration=0.7;
-const GenreSelector: FC<Props> = ({onSelectGenre, selectedGenre}) => {
-    const {error, data:genres, isLoading} = useGenre();
-   const [isOpen, setIsOpen] =  useState<boolean>(false);
+const GenreSelector = () => {
+    const { error, data: genres, isLoading } = useGenre();
+    const selectedGenre = useGameStore(state => state.gameQuery.genreName);
+    const setGenre = useGameStore(state => state.setGenre);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
    function getGenreName(genreSlug: string | null): string | null {
     let res: string | null = null;
     if (genreSlug) {
@@ -38,9 +37,9 @@ const GenreSelector: FC<Props> = ({onSelectGenre, selectedGenre}) => {
           <MotionComponent duration={duration}>
             <Menu.Content>
             <Menu.Item key={"genre"} value={""}
-               onClick={() => {onSelectGenre(null); setIsOpen(false)}}>All genres</Menu.Item>
+               onClick={() => {setGenre(null); setIsOpen(false)}}>All genres</Menu.Item>
               {genres.map(g => <Menu.Item key={g.slug} value={g.slug}
-               onClick={() => {onSelectGenre(g.slug); setIsOpen(false)}}>{g.name}</Menu.Item>)}
+               onClick={() => {setGenre(g.slug); setIsOpen(false)}}>{g.name}</Menu.Item>)}
             </Menu.Content>
           </MotionComponent>
         </Menu.Positioner>
